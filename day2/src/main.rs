@@ -5,6 +5,8 @@ fn main() {
     let mut twos = 0;
     let mut threes = 0;
 
+    let mut ids = Vec::new();
+
     let input = io::stdin();
     for line in input.lock().lines() {
         let mut letter_count: HashMap<char, i32> = HashMap::new();
@@ -13,6 +15,8 @@ fn main() {
             let counter = letter_count.entry(ch).or_default();
             *counter += 1;
         }
+
+        ids.push(line_str);
 
         for n in &letter_count {
             if n.1 == &2 {
@@ -28,6 +32,8 @@ fn main() {
             }
         }
     }
+
+    for id in &ids {}
 
     let first_result = twos * threes;
     println!("Result twos: {:?} threes: {:?}", twos, threes);
