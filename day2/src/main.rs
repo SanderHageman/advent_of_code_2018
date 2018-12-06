@@ -1,11 +1,35 @@
+use std::collections::HashMap;
 use std::io::{self, BufRead};
 
 fn main() {
-    let input = io::stdin();
-    let mut first_result = 0;
+    let mut twos = 0;
+    let mut threes = 0;
 
+    let input = io::stdin();
     for line in input.lock().lines() {
+        let mut letter_count: HashMap<char, i32> = HashMap::new();
         let line_str = line.unwrap_or_default();
-        println!("{}", line_str);
+        for ch in line_str.chars() {
+            let counter = letter_count.entry(ch).or_default();
+            *counter += 1;
+        }
+
+        for n in &letter_count {
+            if n.1 == &2 {
+                twos += 1;
+                break;
+            }
+        }
+
+        for n in letter_count {
+            if n.1 == 3 {
+                threes += 1;
+                break;
+            }
+        }
     }
+
+    let first_result = twos * threes;
+    println!("Result twos: {:?} threes: {:?}", twos, threes);
+    println!("Result Day2_1: {:?}", first_result);
 }
