@@ -33,9 +33,25 @@ fn main() {
         }
     }
 
-    for id in &ids {}
+    println!("Result Day2_1: {:?}", twos * threes);
+    println!("Result Day2_2: {:?}", part2(&ids));
+}
 
-    let first_result = twos * threes;
-    println!("Result twos: {:?} threes: {:?}", twos, threes);
-    println!("Result Day2_1: {:?}", first_result);
+fn part2(ids: &Vec<String>) -> (String, String) {
+    let eqcount = ids[0].len() - 1;
+    for i in 0..ids.len() {
+        for j in i+1..ids.len(){
+            let zipped =
+                ids[i].chars()
+                .zip(ids[j].chars());
+            let count = zipped
+                .filter(|&(a, b)| a == b )
+                .count();
+
+            if count == eqcount{
+                return (ids[i].clone(), ids[j].clone());
+            }
+        }
+    }
+    (String::from("Error"), String::from("Error"))
 }
