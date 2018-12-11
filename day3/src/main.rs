@@ -25,16 +25,14 @@ fn main() {
 
 fn parse_line(line: String) -> Rect {
     lazy_static! {
-        static ref RE: Regex = Regex::new(
-            r"#(?P<id>\d{1, 4}) @ (?P<x>\d{1, 4}),(?P<y>\d{1, 4}): (?P<w>\d{1, 3})x(?P<h>\d{1, 3})$"
-        ).unwrap();
+        static ref RE: Regex = Regex::new(r"^#(\d+) @ (\d+),(\d+): (\d+)x(\d+)$").unwrap();
     }
     let captured_line = RE.captures(&line).unwrap();
     Rect {
-        id: captured_line["id"].parse().unwrap_or_default(),
-        x: captured_line["x"].parse().unwrap_or_default(),
-        y: captured_line["y"].parse().unwrap_or_default(),
-        w: captured_line["w"].parse().unwrap_or_default(),
-        h: captured_line["y"].parse().unwrap_or_default(),
+        id: captured_line[1].parse().unwrap_or_default(),
+        x: captured_line[2].parse().unwrap_or_default(),
+        y: captured_line[3].parse().unwrap_or_default(),
+        w: captured_line[4].parse().unwrap_or_default(),
+        h: captured_line[5].parse().unwrap_or_default(),
     }
 }
