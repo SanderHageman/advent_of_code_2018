@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::io::{self, BufRead};
 
 #[macro_use]
@@ -15,12 +16,17 @@ struct Rect {
 }
 
 fn main() {
-    let mut squares = Vec::new();
+    let mut claims = Vec::new();
+    let mut claimed_squares = HashMap::new();
     let input = io::stdin();
     for line in input.lock().lines() {
-        squares.push(parse_line(line.unwrap()));
-        println!("{:?}", squares.last());
+        claims.push(parse_line(line.unwrap()));
+        println!("{:?}", claims.last());
+
+        claim_squares(claims.last().unwrap(), &mut claimed_squares);
     }
+
+    println!("Overlapping: {}", count_overlapping(&claimed_squares));
 }
 
 fn parse_line(line: String) -> Rect {
@@ -35,4 +41,28 @@ fn parse_line(line: String) -> Rect {
         w: captured_line[4].parse().unwrap_or_default(),
         h: captured_line[5].parse().unwrap_or_default(),
     }
+}
+
+fn claim_squares(claim: &Rect, claimed_squares: &mut HashMap<(i32, i32), bool>) {
+    for y in claim.y..(claim.y + claim.h) {
+        for x in claim.x..(claim.x + claim.w) {
+            let mut square = claimed_squares.insert((x, y), false);
+            match square.as_mut() {
+                Some(v) => *v = true,
+                None => {}
+            }
+        }
+    }
+}
+
+fn count_overlapping(claimed_squares: &HashMap<(i32, i32), bool>) -> i32 {
+    let mut count = 0;
+
+    for val in claimed_squares.values() {
+        if *val {
+            count += 1;
+        }
+    }
+
+    count
 }
